@@ -23,7 +23,7 @@ module MetaWhere
       case associations
       when Symbol, String
         reflection = parent.reflections[associations.to_s.intern] or
-          raise ConfigurationError, "Association named '#{ associations }' was not found; perhaps you misspelled it?"
+          raise ConfigurationError, "Association named '#{ associations }' was not found; perhaps you misspelled it? "
         unless (association = find_join_association(reflection, parent)) && (!klass || association.active_record == klass)
           @reflections << reflection
           if reflection.options[:polymorphic]
@@ -56,7 +56,7 @@ module MetaWhere
     end
   end
 
-  class PolymorphicJoinAssociation < ActiveRecord::Associations::ClassMethods::JoinDependency::JoinAssociation
+  class PolymorphicJoinAssociation < ActiveRecord::Associations::JoinDependency::JoinAssociation
 
     def initialize(reflection, join_dependency, polymorphic_class, parent = nil)
       reflection.check_validity!
