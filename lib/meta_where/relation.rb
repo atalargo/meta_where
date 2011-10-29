@@ -72,7 +72,7 @@ module MetaWhere
         @implicit_readonly = true
 
         case join
-        when ActiveRecord::Associations::ClassMethods::JoinDependency::JoinAssociation
+        when ActiveRecord::Associations::JoinDependency::JoinAssociation
           arel = arel.join(join.relation, Arel::Nodes::OuterJoin).on(*join.on)
         when Hash, Array, Symbol
           if array_of_strings?(join)
@@ -114,12 +114,12 @@ module MetaWhere
     # Very occasionally, we need to get a visitor for another relation, so it makes sense to factor
     # these out into a public method despite only being two lines long.
     def predicate_visitor
-      join_dependency = ActiveRecord::Associations::ClassMethods::JoinDependency.new(@klass, association_joins, custom_joins)
+      join_dependency = ActiveRecord::Associations::JoinDependency.new(@klass, association_joins, custom_joins)
       MetaWhere::Visitors::Predicate.new(join_dependency)
     end
 
     def attribute_visitor
-      join_dependency = ActiveRecord::Associations::ClassMethods::JoinDependency.new(@klass, association_joins, custom_joins)
+      join_dependency = ActiveRecord::Associations::JoinDependency.new(@klass, association_joins, custom_joins)
       MetaWhere::Visitors::Attribute.new(join_dependency)
     end
 
@@ -132,7 +132,7 @@ module MetaWhere
     def debug_sql
       if eager_loading?
         including = (@eager_load_values + @includes_values).uniq
-        join_dependency = ActiveRecord::Associations::ClassMethods::JoinDependency.new(@klass, including, nil)
+        join_dependency = ActiveRecord::Associations::JoinDependency.new(@klass, including, nil)
         construct_relation_for_association_find(join_dependency).to_sql
       else
         arel.to_sql
@@ -282,7 +282,7 @@ module MetaWhere
     end
 
     def stashed_association_joins
-      @mw_stashed_association_joins ||= unique_joins.grep(ActiveRecord::Associations::ClassMethods::JoinDependency::JoinAssociation)
+      @mw_stashed_association_joins ||= unique_joins.grep(ActiveRecord::Associations::JoinDependency::JoinAssociation)
     end
 
     def non_association_joins

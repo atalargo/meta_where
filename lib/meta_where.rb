@@ -48,4 +48,4 @@ require 'meta_where/relation'
 require 'meta_where/join_dependency'
 ActiveRecord::Relation.send(:include, MetaWhere::Relation)
 ActiveRecord::Reflection::AssociationReflection.send(:include, MetaWhere::AssociationReflection)
-ActiveRecord::Associations::ClassMethods::JoinDependency.send(:include, MetaWhere::JoinDependency)
+ActiveRecord::Associations::JoinDependency.send(:include, MetaWhere::JoinDependency)
